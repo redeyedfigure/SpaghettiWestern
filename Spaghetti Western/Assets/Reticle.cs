@@ -8,17 +8,22 @@ public class Reticle : MonoBehaviour
     private RectTransform reticle;
     public float restingSize;
     public float maxSize;
+    public float aimSize;
     public float speed;
     private float currentSize;
+    public Gun gun;
 
     private void Start(){
         reticle = GetComponent<RectTransform>();
     }
     private void Update(){
-        if(isMoving){
+        if(isMoving && !gun.isAiming){
             currentSize = Mathf.Lerp(currentSize, maxSize, Time.deltaTime * speed);
-        } else{
+        } else if(!isMoving && !gun.isAiming) {
             currentSize = Mathf.Lerp(currentSize, restingSize, Time.deltaTime * speed);
+        }
+        if(gun.isAiming){
+            currentSize = Mathf.Lerp(currentSize, aimSize, Time.deltaTime * speed);
         }
 
         reticle.sizeDelta = new Vector2(currentSize, currentSize);
